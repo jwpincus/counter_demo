@@ -1,7 +1,7 @@
 defmodule CounterWeb.Counter do
   use CounterWeb, :live_view
 
-  @topic "live"
+  @topic "live" # topic name, this is a module attribute. Think of it like a constant
 
   def mount(_session, _params, socket) do
     CounterWeb.Endpoint.subscribe(@topic) # subscribe to the channel
@@ -9,8 +9,7 @@ defmodule CounterWeb.Counter do
   end
 
   def handle_event("inc", _value, socket) do
-    new_state = update(socket, :val, &(&1 + 1))
-    IO.inspect(socket)
+    new_state = update(socket, :val, &(&1 + 1)) # update the socket with the new value
     CounterWeb.Endpoint.broadcast_from(self(), @topic, "inc", new_state.assigns)
     {:noreply, new_state}
   end
@@ -21,7 +20,7 @@ defmodule CounterWeb.Counter do
     {:noreply, new_state}
   end
 
-  def handle_info(msg, socket) do
+  def handle_info(msg, socket) do # handle incoming messages to all processes being recieved from the channel
     {:noreply, assign(socket, val: msg.payload.val)}
   end
 
