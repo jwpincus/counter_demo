@@ -18,9 +18,9 @@ defmodule CounterWeb.Counter do
   end
 
   def handle_event("dec", _, socket) do
-    Count.decrement()
-    new_state = assign(socket, :val, Count.value)
-    CounterWeb.Endpoint.broadcast_from(self(), @topic, "dec", new_state.assigns)
+    Count.decrement() # state is updated
+    new_state = assign(socket, :val, Count.value) # assign new value to the socket for this client
+    CounterWeb.Endpoint.broadcast_from(self(), @topic, "dec", new_state.assigns) # broadcast to all clients
     {:noreply, new_state}
   end
 
