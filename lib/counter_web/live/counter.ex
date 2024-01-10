@@ -1,22 +1,25 @@
 defmodule CounterWeb.Counter do
   use CounterWeb, :live_view
+  alias Counter.Count
 
   @topic "live"
 
+  @spec mount(any(), any(), map()) :: {:ok, map()}
   def mount(_session, _params, socket) do
     CounterWeb.Endpoint.subscribe(@topic) # subscribe to the channel
-    {:ok, assign(socket, :val, 0)}
+    {:ok, assign(socket, :val, Count.value)}
   end
 
   def handle_event("inc", _value, socket) do
-    new_state = update(socket, :val, &(&1 + 1))
-    IO.inspect(socket)
+    Count.increment()
+    new_state = assign(socket, :val, Count.value)
     CounterWeb.Endpoint.broadcast_from(self(), @topic, "inc", new_state.assigns)
     {:noreply, new_state}
   end
 
   def handle_event("dec", _, socket) do
-    new_state = update(socket, :val, &(&1 - 1))
+    Count.decrement()
+    new_state = assign(socket, :val, Count.value)
     CounterWeb.Endpoint.broadcast_from(self(), @topic, "dec", new_state.assigns)
     {:noreply, new_state}
   end
