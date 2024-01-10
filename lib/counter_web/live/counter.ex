@@ -5,11 +5,11 @@ defmodule CounterWeb.Counter do
     {:ok, assign(socket, :val, 0)}
   end
 
-  def handle_event("inc", _, socket) do
+  def handle_event("inc", _params, socket) do
     {:noreply, update(socket, :val, fn(x) -> x + 1 end)}
   end
 
-  def handle_event("dec", _, socket) do
+  def handle_event("dec", _params, socket) do
     {:noreply, update(socket, :val, fn(x) -> x - 1 end)}
   end
 
