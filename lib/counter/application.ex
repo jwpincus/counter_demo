@@ -8,6 +8,8 @@ defmodule Counter.Application do
   @impl true
   def start(_type, _args) do
     children = [
+      #start the counter
+      {Counter.Count, 0},
       # Start the Telemetry supervisor
       CounterWeb.Telemetry,
       # Start the PubSub system
