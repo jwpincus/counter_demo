@@ -6,11 +6,11 @@ defmodule CounterWeb.Counter do
   end
 
   def handle_event("inc", _, socket) do
-    {:noreply, update(socket, :val, &(&1 + 1))}
+    {:noreply, update(socket, :val, fn(x) -> x + 1 end)}
   end
 
   def handle_event("dec", _, socket) do
-    {:noreply, update(socket, :val, &(&1 - 1))}
+    {:noreply, update(socket, :val, fn(x) -> x - 1 end)}
   end
 
   def render(assigns) do
